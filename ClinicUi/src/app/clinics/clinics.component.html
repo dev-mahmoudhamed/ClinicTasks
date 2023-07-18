@@ -1,0 +1,74 @@
+<div class="container">
+    Add new Clinic
+    <div class="card">
+        <form [formGroup]="clinicForm" novalidate (ngSubmit)="onSubmit()">
+
+            <input type="text" required pInputText formControlName="name" placeholder="Name" class="ng-dirty" />
+            <span *ngIf="clinicForm.get('name')?.invalid && (clinicForm.get('name')?.dirty 
+                 || clinicForm.get('name')?.touched)">
+                Name is required.
+            </span>
+
+            <input type="text" required pInputText formControlName="address" placeholder="Address" class="ng-dirty" />
+            <span *ngIf="clinicForm.get('address')?.invalid && (clinicForm.get('address')?.dirty 
+                 || clinicForm.get('address')?.touched)">
+                Address is required.
+            </span>
+
+
+            <input type="text" required pInputText formControlName="phoneNumber" placeholder="Phone Number"
+                class="ng-dirty" />
+            <span *ngIf="clinicForm.get('phoneNumber')?.invalid && (clinicForm.get('phoneNumber')?.dirty
+                 || clinicForm.get('phoneNumber')?.touched)">
+                <span *ngIf="clinicForm.get('phoneNumber')?.hasError('required')">
+                    Phone number is required.
+                </span>
+                <span *ngIf="clinicForm.get('phoneNumber')?.hasError('pattern')">
+                    Invalid phone number format. Please enter a 10-digit number.
+                </span>
+            </span>
+
+
+
+            <p-dropdown placeholder="Select Clinic" formControlName="specializationId" [options]='specializations'
+                optionLabel="name" optionValue="id">
+            </p-dropdown>
+            <p-button type="submit" label="Save" icon="pi pi-save" styleClass="p-button-sm p-button-success"></p-button>
+        </form>
+    </div>
+</div>
+
+
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+
+
+<div class="card card-container">
+    <p-table [value]="clinics">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>PhoneNumber</th>
+                <th>Specialization</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-clinic>
+            <tr>
+                <td>{{clinic.id}}</td>
+                <td>{{clinic.name}}</td>
+                <td>{{clinic.address }}</td>
+                <td>{{clinic.phoneNumber }}</td>
+                <td>{{clinic.specialization.name }}</td>
+                <td>
+                    <p-button label="Edit" styleClass="p-button-sm" (click)="editClinic(clinic.id)"></p-button>
+
+
+                    <p-button (click)="showConfirmation(clinic.id)" styleClass="p-button-danger p-button-sm"
+                        icon="pi pi-times" label="Delete"></p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
